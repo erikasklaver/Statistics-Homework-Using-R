@@ -1,0 +1,62 @@
+---
+title: "HW 9"
+author: "Erika Sklaver"
+date: "April 10, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question 4 
+
+
+```{r}
+data.set = read.table("gamma.txt")
+
+k= seq(.5,20,by=0.5);
+theta  = k;
+
+llk = array(0,dim=c(length(k),length(theta)))
+
+for(i in 1:length(k)){
+  for(j in 1:length(theta)){
+
+    sum = 0
+    for(x in 1:length(data.set[,1])){
+      sum = sum + log(((data.set[x,])^(k[i]-1))*exp(-(data.set[x,])/theta[j])/
+       (((theta[j])^(k[i]))*gamma(k[i])))
+    }
+    llk[i,j] = sum
+
+  }
+}
+
+max_val = max(llk, na.rm = TRUE)
+
+k_theta = which(llk == max_val, arr.ind = TRUE)
+k_hat_index = k_theta[1,1]
+theta_hat_index = k_theta[1,2]
+
+k_hat = k[k_hat_index]  
+theta_hat = theta[theta_hat_index]
+```
+
+$$\hat{k}= 13 \\ \hat{\theta} = 1.5$$
+
+```{r}
+hist(as.numeric(data.set[,1]), freq = FALSE, xlab = "Data Points", 
+     main = "Histogram of Data")
+
+x = seq(0, 50, by =1)
+y = dgamma(x,shape = k_hat,scale = theta_hat)
+
+points(x,y)
+```
+
+```{r}
+p_more_than_40 = 1-pgamma(40, shape = k_hat, scale = theta_hat)
+```
+
+The probability that the next data point would be greater than 40 is 0.001230792

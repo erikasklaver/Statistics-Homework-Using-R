@@ -1,0 +1,332 @@
+---
+title: "HW 10"
+author: "Erika Sklaver"
+date: "4/18/2017"
+output: html_document
+---
+
+```{r}
+m = 10 
+d1 = 3
+d2 = 50 
+h1 = 3
+
+N = 1000
+
+Hf2_vector = rep(0, N)
+
+Ha2_vector = rep(0, N)
+
+for(i in 1:N){
+  
+  d1_data_loop = d1 + rnorm(m, mean = 0, sd = 0.01) 
+  d2_data_loop = d2 + rnorm(m, mean = 0, sd = 1)
+  h1_data_loop = h1 + rnorm(m, mean = 0, sd = 0.01)
+  
+  Hf2_vector[i] = (mean(d2_data_loop))*(mean(h1_data_loop))*(1/mean(d1_data_loop))
+  
+  Ha2_vector[i] = (1/m)*(sum(d2_data_loop * h1_data_loop *(1/d1_data_loop)))
+  
+}
+
+hist(Hf2_vector, xlab = "First", main = NULL)
+hist(Ha2_vector, xlab = "After", main = NULL)
+
+bias_f = mean(Hf2_vector) - (d2*h1)/d1
+bias_a = mean(Ha2_vector) - (d2*h1)/d1
+
+var_f = var(Hf2_vector)
+var_a = var(Ha2_vector)
+```
+
+The bias and the varience are very similar each time. 
+
+```{r}
+d1 = 3
+d2 = 50 
+h1 = 3
+
+N = 1000
+M = 100
+
+Hf2_bias_vector = rep(0, M)
+Ha2_bias_vector = rep(0, M)
+Hf2_var_vector = rep(0, M)
+Ha2_var_vector = rep(0, M)
+
+for (j in 1:M){
+  Hf2_vector = rep(0, N)
+
+  Ha2_vector = rep(0, N)
+
+  for(i in 1:N){
+  
+    d1_data_loop = d1 + rnorm(j, mean = 0, sd = 0.01) 
+    d2_data_loop = d2 + rnorm(j, mean = 0, sd = 1)
+    h1_data_loop = h1 + rnorm(j, mean = 0, sd = 0.01)
+  
+    Hf2_vector[i] = (mean(d2_data_loop))*(mean(h1_data_loop))*(1/mean(d1_data_loop))
+
+    Ha2_vector[i] =  (1/j)*(sum(d2_data_loop * h1_data_loop *(1/d1_data_loop)))
+  }
+
+
+  bias_f = mean(Hf2_vector) - (d2*h1)/d1
+  bias_a = mean(Ha2_vector) - (d2*h1)/d1
+
+  var_f = var(Hf2_vector)
+  var_a = var(Ha2_vector)
+  
+  Hf2_bias_vector[j] = bias_f 
+  Ha2_bias_vector[j] = bias_a 
+  Hf2_var_vector[j] = var_f 
+  Ha2_var_vector[j] = var_a 
+  
+  
+}
+
+plot(Hf2_bias_vector, col = "blue", ylab = "Bias", xlab = "M")
+points(Ha2_bias_vector, col = "red")
+
+legend(x = "topright", legend = c("First", "After"),
+       col = c("blue","red"), pch = 1)
+
+plot(Hf2_var_vector, col = "blue", ylab = "Variance", xlab = "M")
+points(Ha2_var_vector, col = "red")
+
+legend(x = "topright", legend = c("First", "After"),
+       col = c("blue","red"), pch = 1)
+```
+
+The variences are almost exactly the same. And the biases are slightly varied. 
+
+Trying different standard deviations:
+```{r}
+sdd1 = 0.01 
+sdd2 = 5
+sdh1 = 0.01
+```
+
+```{r, echo = FALSE}
+Hf2_bias_vector = rep(0, M)
+Ha2_bias_vector = rep(0, M)
+Hf2_var_vector = rep(0, M)
+Ha2_var_vector = rep(0, M)
+
+for (j in 1:M){
+  Hf2_vector = rep(0, N)
+
+  Ha2_vector = rep(0, N)
+
+  for(i in 1:N){
+  
+    d1_data_loop = d1 + rnorm(j, mean = 0, sd = sdd1) 
+    d2_data_loop = d2 + rnorm(j, mean = 0, sd = sdd2)
+    h1_data_loop = h1 + rnorm(j, mean = 0, sd = sdh1)
+  
+    Hf2_vector[i] = (mean(d2_data_loop))*(mean(h1_data_loop))*(1/mean(d1_data_loop))
+
+    Ha2_vector[i] =  (1/j)*(sum(d2_data_loop * h1_data_loop *(1/d1_data_loop)))
+  }
+
+
+  bias_f = mean(Hf2_vector) - (d2*h1)/d1
+  bias_a = mean(Ha2_vector) - (d2*h1)/d1
+
+  var_f = var(Hf2_vector)
+  var_a = var(Ha2_vector)
+  
+  Hf2_bias_vector[j] = bias_f 
+  Ha2_bias_vector[j] = bias_a 
+  Hf2_var_vector[j] = var_f 
+  Ha2_var_vector[j] = var_a 
+  
+  
+}
+
+plot(Hf2_bias_vector, col = "blue", ylab = "Bias", xlab = "M")
+points(Ha2_bias_vector, col = "red")
+
+legend(x = "topright", legend = c("First", "After"),
+       col = c("blue","red"), pch = 1)
+
+plot(Hf2_var_vector, col = "blue", ylab = "Variance", xlab = "M")
+points(Ha2_var_vector, col = "red")
+
+legend(x = "topright", legend = c("First", "After"),
+       col = c("blue","red"), pch = 1)
+
+```
+
+```{r}
+sdd1 = 0.3  
+sdd2 = 1
+sdh1 = 0.01
+```
+
+```{r, echo = FALSE}
+Hf2_bias_vector = rep(0, M)
+Ha2_bias_vector = rep(0, M)
+Hf2_var_vector = rep(0, M)
+Ha2_var_vector = rep(0, M)
+
+for (j in 1:M){
+  Hf2_vector = rep(0, N)
+
+  Ha2_vector = rep(0, N)
+
+  for(i in 1:N){
+  
+    d1_data_loop = d1 + rnorm(j, mean = 0, sd = sdd1) 
+    d2_data_loop = d2 + rnorm(j, mean = 0, sd = sdd2)
+    h1_data_loop = h1 + rnorm(j, mean = 0, sd = sdh1)
+  
+    Hf2_vector[i] = (mean(d2_data_loop))*(mean(h1_data_loop))*(1/mean(d1_data_loop))
+
+    Ha2_vector[i] =  (1/j)*(sum(d2_data_loop * h1_data_loop *(1/d1_data_loop)))
+  }
+
+
+  bias_f = mean(Hf2_vector) - (d2*h1)/d1
+  bias_a = mean(Ha2_vector) - (d2*h1)/d1
+
+  var_f = var(Hf2_vector)
+  var_a = var(Ha2_vector)
+  
+  Hf2_bias_vector[j] = bias_f 
+  Ha2_bias_vector[j] = bias_a 
+  Hf2_var_vector[j] = var_f 
+  Ha2_var_vector[j] = var_a 
+  
+  
+}
+
+plot(Hf2_bias_vector, col = "blue", ylab = "Bias", xlab = "M")
+points(Ha2_bias_vector, col = "red")
+
+legend(x = "topright", legend = c("First", "After"),
+       col = c("blue","red"), pch = 1)
+
+plot(Hf2_var_vector, col = "blue", ylab = "Variance", xlab = "M")
+points(Ha2_var_vector, col = "red")
+
+legend(x = "topright", legend = c("First", "After"),
+       col = c("blue","red"), pch = 1)
+
+```
+
+```{r}
+sdd1 = 0.01
+sdd2 = 1
+sdh1 = 0.3
+```
+
+```{r, echo = FALSE}
+Hf2_bias_vector = rep(0, M)
+Ha2_bias_vector = rep(0, M)
+Hf2_var_vector = rep(0, M)
+Ha2_var_vector = rep(0, M)
+
+for (j in 1:M){
+  Hf2_vector = rep(0, N)
+
+  Ha2_vector = rep(0, N)
+
+  for(i in 1:N){
+  
+    d1_data_loop = d1 + rnorm(j, mean = 0, sd = sdd1) 
+    d2_data_loop = d2 + rnorm(j, mean = 0, sd = sdd2)
+    h1_data_loop = h1 + rnorm(j, mean = 0, sd = sdh1)
+  
+    Hf2_vector[i] = (mean(d2_data_loop))*(mean(h1_data_loop))*(1/mean(d1_data_loop))
+
+    Ha2_vector[i] =  (1/j)*(sum(d2_data_loop * h1_data_loop *(1/d1_data_loop)))
+  }
+
+
+  bias_f = mean(Hf2_vector) - (d2*h1)/d1
+  bias_a = mean(Ha2_vector) - (d2*h1)/d1
+
+  var_f = var(Hf2_vector)
+  var_a = var(Ha2_vector)
+  
+  Hf2_bias_vector[j] = bias_f 
+  Ha2_bias_vector[j] = bias_a 
+  Hf2_var_vector[j] = var_f 
+  Ha2_var_vector[j] = var_a 
+  
+  
+}
+
+plot(Hf2_bias_vector, col = "blue", ylab = "Bias", xlab = "M")
+points(Ha2_bias_vector, col = "red")
+
+legend(x = "topright", legend = c("First", "After"),
+       col = c("blue","red"), pch = 1)
+
+plot(Hf2_var_vector, col = "blue", ylab = "Variance", xlab = "M")
+points(Ha2_var_vector, col = "red")
+
+legend(x = "topright", legend = c("First", "After"),
+       col = c("blue","red"), pch = 1)
+
+```
+
+```{r}
+sdd1 = 0.3 
+sdd2 = 5
+sdh1 = 0.3
+```
+
+```{r, echo = FALSE}
+Hf2_bias_vector = rep(0, M)
+Ha2_bias_vector = rep(0, M)
+Hf2_var_vector = rep(0, M)
+Ha2_var_vector = rep(0, M)
+
+for (j in 1:M){
+  Hf2_vector = rep(0, N)
+
+  Ha2_vector = rep(0, N)
+
+  for(i in 1:N){
+  
+    d1_data_loop = d1 + rnorm(j, mean = 0, sd = sdd1) 
+    d2_data_loop = d2 + rnorm(j, mean = 0, sd = sdd2)
+    h1_data_loop = h1 + rnorm(j, mean = 0, sd = sdh1)
+  
+    Hf2_vector[i] = (mean(d2_data_loop))*(mean(h1_data_loop))*(1/mean(d1_data_loop))
+
+    Ha2_vector[i] =  (1/j)*(sum(d2_data_loop * h1_data_loop *(1/d1_data_loop)))
+  }
+
+
+  bias_f = mean(Hf2_vector) - (d2*h1)/d1
+  bias_a = mean(Ha2_vector) - (d2*h1)/d1
+
+  var_f = var(Hf2_vector)
+  var_a = var(Ha2_vector)
+  
+  Hf2_bias_vector[j] = bias_f 
+  Ha2_bias_vector[j] = bias_a 
+  Hf2_var_vector[j] = var_f 
+  Ha2_var_vector[j] = var_a 
+  
+  
+}
+
+plot(Hf2_bias_vector, col = "blue", ylab = "Bias", xlab = "M")
+points(Ha2_bias_vector, col = "red")
+
+legend(x = "topright", legend = c("First", "After"),
+       col = c("blue","red"), pch = 1)
+
+plot(Hf2_var_vector, col = "blue", ylab = "Variance", xlab = "M")
+points(Ha2_var_vector, col = "red")
+
+legend(x = "topright", legend = c("First", "After"),
+       col = c("blue","red"), pch = 1)
+
+```
+
+It seems like the first estimator is better because the bias is lower with the first procedure. The varience is similar with both.  

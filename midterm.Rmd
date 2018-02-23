@@ -1,0 +1,94 @@
+---
+title: "Exam 1"
+author: "Erika Sklaver"
+date: "March 21, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Question
+
+
+
+```{r}
+data.set = read.table("simpson.txt", header=TRUE, sep="\t")
+
+num_rows = nrow(data.set)
+num_cols = ncol(data.set)
+```
+There are 100 rows and 3 columns in the data set
+
+
+```{r}
+covar=cov(data.set$g.max, data.set$position, use="pairwise.complete.obs")
+
+meanx = mean(data.set$g.max,na.rm=TRUE)
+meany = mean(data.set$position,na.rm=TRUE)
+
+varx= var(data.set$g.max,na.rm=TRUE)
+
+a_hat= covar/varx
+b_hat = meany - a_hat*meanx
+```
+
+The regression coefficients are $$\hat{a} = -0.9568539\\ \hat{b} = 23.80755$$
+
+```{r}
+class1_index = which(data.set$class == 1)
+
+covar1=cov(data.set[class1_index, 1], data.set[class1_index, 2],
+          use="pairwise.complete.obs")
+
+meanx1 = mean(data.set[class1_index, 1],na.rm=TRUE)
+meany1 = mean(data.set[class1_index, 2],na.rm=TRUE)
+
+varx1= var(data.set[class1_index, 1],na.rm=TRUE)
+
+a_hat1= covar1/varx1
+b_hat1 = meany1 - a_hat1*meanx1
+```
+
+The regression coefficients for those in class 1 are $$\hat{a} = 2.666915\\ \hat{b} = 16.06051$$
+
+```{r}
+class2_index = which(data.set$class == 2)
+
+covar2=cov(data.set[class2_index, 1], data.set[class2_index, 2],
+           use="pairwise.complete.obs")
+
+meanx2 = mean(data.set[class2_index, 1],na.rm=TRUE)
+meany2 = mean(data.set[class2_index, 2],na.rm=TRUE)
+
+varx2= var(data.set[class2_index, 1],na.rm=TRUE)
+
+a_hat2= covar2/varx2
+b_hat2 = meany2 - a_hat2*meanx2
+```
+
+The regression coefficients for those in class 2 are $$\hat{a} = 2.232067\\ \hat{b} = -4.019724$$
+
+```{r}
+
+plot(data.set$g.max, data.set$position, 
+     xlab = "g.max", ylab = "position",
+     pch = ifelse(data.set$class == 1, 0, 2)
+     )
+
+abline(b_hat, a_hat, lwd = 5, lty = 2)
+
+legend(x = "topright", legend = c("Class 1", "Class 2"),
+       pch = c(0,2), cex = 1)
+                  
+class1_index = which(data.set$class == 1)
+
+
+abline(b_hat1, a_hat1)
+
+
+abline(b_hat2, a_hat2)
+```
+
+There is not a very strong correlation between position and g.max for all of the data points. This means that for any data point, the g.max does not tell you much about the position. However if we look at the data points in different classes, we can see that there is a much stronger correlation within each class type. If we are only looking at data points in class 1 (squares), then we can see that g.max and position have a positive linear correlation. Similarly, data points in class 2 (triangles) have a positive linear correlation. The class type has some effect on the g.max and position values. 

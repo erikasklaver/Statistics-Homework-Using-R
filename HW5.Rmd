@@ -1,0 +1,91 @@
+---
+title: "HW 5"
+author: "Erika Sklaver"
+date: "February 23, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question 1
+
+```{r}
+
+data.set = read.table("data_set.txt",header=TRUE, sep=",")
+
+world.pop = sum(as.numeric(data.set$Population),na.rm=TRUE)
+
+plot(log10(data.set[,3]),data.set[,4],
+     xlab="GDP per capita (log-scale)", 
+     ylab = "Life Expectancy (years)",
+     col = ifelse(data.set[,4]>75, "blue", 
+                  ifelse(data.set[,4]>70, "green",
+                         ifelse(data.set[,4]>65, "yellow",
+                                ifelse(data.set[,4]>60, "orange","red")
+                                )
+                         )
+                  ),
+      pch = 0, cex = sqrt((data.set[,2]/world.pop)*150))
+
+
+text(log10(data.set[31,3]),data.set[31,4], data.set[31,1], 
+     pos = 4, offset = .2, cex = .75)
+text(log10(data.set[114,3]),data.set[114,4], data.set[114,1], 
+     pos = 4, offset = .2, cex = .75)
+text(log10(data.set[172,3]),data.set[172,4], data.set[172,1], 
+     pos = 4, offset = .2, cex = .75)
+
+gdp = log10(data.set[,3])
+life = data.set[,4]
+
+
+weight = data.set[,2]/world.pop
+
+# using the weighted.mean function gives slightly different answers
+# weighted_meanx = weighted.mean(log10(data.set[,3]), sqrt((data.set[,2]/world.pop)*150),
+#                                na.rm=TRUE)
+# weighted_meany = weighted.mean(data.set[,4], sqrt((data.set[,2]/world.pop)*150),
+#                                na.rm=TRUE)
+
+weighted_meanx = sum(weight*gdp, na.rm=TRUE)/sum(weight, na.rm=TRUE)
+weighted_meany = sum(weight*life, na.rm=TRUE)/sum(weight, na.rm=TRUE)
+
+
+x_minus_wmean = gdp - weighted_meanx
+y_minus_wmean = life - weighted_meany
+
+wa_hat= (sum((weight)*(x_minus_wmean)*(y_minus_wmean), na.rm = TRUE))/
+  (sum((weight)*(x_minus_wmean)*(x_minus_wmean), na.rm = TRUE))
+wb_hat = weighted_meany - wa_hat*weighted_meanx 
+
+abline(wb_hat, wa_hat, lty=3, lwd = 3)
+```
+
+## Question 2
+
+```{r}
+res_vec = life-(wa_hat*gdp + wb_hat)
+outliers=data.set[which(res_vec<(-15)| res_vec>15),1]
+hist(res_vec, xlab="Residuals")
+```
+
+
+Threshold values that defines outliers: Any residual with an absolute value greater than 15. In this case that includes: Angola, Botswana, Cote d'Ivoire, Equatorial Guinea, Lesotho, Sierra Leon, Swaziland, South Africa 
+
+1. Angola: According to http://www.worldlifeexpectancy.com/angola-life-expectancy, Angola has a life expectancy of 52.4. The highest causes of death are: Influenza and Pneumonia, diarrhoeal diseases, stroke, Coronary Heart Disease and HIV/AIDS. According to https://www.quora.com/Why-does-Angola-rank-lowest-in-the-Human-Development-Index, Angola does not spend much on healthcare, which could be why the highest causes of death are all illnesses. 
+
+2. South Africa: According to http://blog.euromonitor.com/2014/03/economic-growth-and-life-expectancy-do-wealthier-countries-live-longer.html the life expectancy has dropped while the GDP has increased. They say that this has happened in a few other African countries due to income inequality. There are many low income people in South Africa that are more suseptible to AIDS and other diseases due to lack of access to health care and information. At the same time there are few people who are becoming very wealthy, which accounts for the higher GDP. 
+
+```{r}
+plot(gdp, res_vec, xlab="GDP per capita (log-scale)", 
+     ylab = "Residuals")
+```
+
+
+Does the model fit evenly well across all values? If not, what factors do you think lead to this asymmetry?
+
+This is not completely fitted well across all values. However, there is a clumping that forms a line (kind of) close to 0, which shows that GDP and Life Expectancy do seem to be related. This graph does not take into account the population, which might be one of the reasons it doesn't fit. If many countries with small populations are outliers, then for most of the population, GDP is strongly correlated with life expectancy. These individual countries may have unique conditions that cause them to be outliers. For example, war or disease may cause life expectancy to go down uncharacteristically. Or, if a country has excellent weather, little conflict or disease, it may have a low GDP, but high life expectancy. 
+
+

@@ -1,0 +1,106 @@
+---
+title: "HW 12"
+author: "Erika Sklaver"
+date: "5/7/2017"
+output: html_document
+---
+
+## Question 1 
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+
+The probability that a draw from the true sampling distribution will fall into the critical region is: 
+
+```{r}
+1-pnorm(qnorm(.99), 1,1)
+```
+
+
+This means that we will reject the null hypothesis $9.236%$ of the time.
+
+```{r}
+prob = rep(0,10)
+
+for (i in 0:10){
+  prob[i] = 1-pnorm(qnorm(.99),i,1)
+}
+
+plot(prob, xlab = "Mean Values", ylab = "Probability of Rejecting the Null")
+```
+
+## Question 2 
+
+```{r}
+sample_mean = .1
+null_mean = 0 
+var = 1
+z_alpha = qnorm(.99)
+
+probas = rep(NULL, 20)
+
+for(N in 2:20){
+ 
+accepted = rep(NULL, 1000)  
+  for(i in 1:1000){
+    data = rnorm(N, sample_mean, sqrt(var))
+    u_hat = mean(data)
+    z_score = (u_hat - null_mean) * sqrt(N) * (sqrt(var))
+    
+    if(z_score>=z_alpha){
+      ##reject null
+      accepted[i] = 1
+    }else{
+      ##don't reject null 
+      accepted[i] = 0
+    }
+  }
+  
+  probas[N] = mean(accepted, na.rm = TRUE) 
+}
+
+plot(probas)
+
+
+probs = rep(NULL, 20)
+ 
+
+for(N in 2:20){
+  
+  accepted = rep(NULL, 1000)  
+  for(i in 1:1000){
+    data = rnorm(N, sample_mean, sqrt(var))
+    u_hat = mean(data)
+    var_hat = var(data)
+    z_score = (u_hat - null_mean) * sqrt(N) * (sqrt(var_hat))
+    
+    if(z_score>=z_alpha){
+      ##reject null
+      accepted[i] = 1
+    }else{
+      ##don't reject null 
+      accepted[i] = 0
+    }
+  }
+  
+  probs[N] = mean(accepted, na.rm = TRUE) 
+ 
+}
+
+plot(probas, col = "blue", ylim = c(0,.2), xlab = "N", ylab = "Probability")
+points(probs, col = "red")
+
+legend(x = "topright", legend = c("Standard Deviation = 1", "Sample Standard Deviation"),
+       col = c("blue","red"), pch = 1)
+```
+
+When the standard deviation is 1 each time (blue), there is less variability in the distribution. This is why the probability of rejecting the null hypothesis is a bit lower than when calculating the standard deviation each time. 

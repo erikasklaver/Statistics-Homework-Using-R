@@ -1,0 +1,161 @@
+---
+title: "HW 11"
+author: "Erika Sklaver"
+date: "4/26/2017"
+output: html_document
+---
+
+## Question 1 
+# (a)
+```{r}
+data.set = unlist(read.table("bs.txt",header=FALSE,sep="\t"))
+
+M = 1000
+mean_results = rep (0, M)
+var_results = rep (0, M)
+results75 = rep(0, M)
+
+for(i in 1:M){
+
+  d_tilde = sample(data.set, length(data.set), replace = TRUE)
+  mean_results[i] = mean(d_tilde)
+  
+  var_results[i] = var(d_tilde)
+  
+  results75[i]= quantile(d_tilde, c(.75))
+
+}
+
+## 99% confidence interval for mean 
+mean_ci = quantile(mean_results, c(0.005, 0.995))
+```
+99% confidence interval for mean: $[3.288481, 4.555938]$
+
+```{r}
+## 99% confidence interval for varience
+var_ci = quantile(var_results,c(0.005, 0.995))
+```
+99% confidence interval for varience: $[17.04505, 21.69684]$
+
+```{r}
+## 99% confidence interval for 75th percentile 
+sev_five_ci = quantile(results75,c(0.005, 0.995))
+```
+99% confidence interval for 75th percentile: $[7.821626, 9.781769]$
+
+# (b)
+```{r}
+u_hat = mean(data.set)
+std = sqrt(var(data.set))
+se = std/sqrt(length(data.set))
+z_alpha_over2 = qnorm(.995)
+  
+## 99% confidence interval for mean using CLT
+ci_min = u_hat - z_alpha_over2 * se
+ci_max = u_hat + z_alpha_over2 * se
+```
+99% confidence interval for mean using CLT: $[3.302244, 4.616848]$
+
+This data does not look very normal when plotted, so bootstrap seems more believable than the CLT.
+
+## Question 2 
+
+# (a)
+
+```{r}
+data.set = read.table("data_set.txt",header=TRUE,sep=",")
+
+health = data.set[,4]
+wealth = log10(data.set[,3])
+
+mle_a = cov(wealth, health, use = "pairwise.complete.obs") / var(wealth, na.rm = TRUE)
+```
+MLE for $a = 11.1322$
+
+```{r}
+mle_b = mean(health, na.rm = TRUE) - mle_a * mean(wealth, na.rm = TRUE)
+```
+MLE for $b = 28.78664$
+
+```{r}
+data_size = length(data.set[,1])
+sum_sq = rep(0, data_size) 
+
+for (i in 1:data_size){
+    sum_sq[i] = (health[i]-mle_a * wealth[i] - mle_b)^2
+}
+
+mle_sigma_squared = sum(sum_sq, na.rm = TRUE)/length(sum_sq[!is.na(sum_sq)])
+```
+MLE for $\sigma^2 = 28.78664$
+
+# (b)
+
+```{r}
+probs = rep(0, data_size)
+
+for (i in 1:data_size){
+  probs[i] = (1 - pnorm(sqrt(sum_sq[i]), 0, sqrt(mle_sigma_squared)))*2 
+}
+```
+
+# (c)
+
+```{r}
+plot(wealth, log10(probs))
+```
+
+It seems like this is a good model. The probabilities of observing something more extreme are very low. 
+
+## Question 3 
+
+# (a)
+
+```{r}
+london_male = 737629
+london_female = 698958
+paris_male = 251527
+paris_female = 241945
+
+london_pop = london_female+london_male
+paris_pop = paris_female+paris_male
+total_pop = london_pop+paris_pop
+  
+p_hat = (london_male+paris_male)/total_pop
+var_hat = p_hat*(1-p_hat)*(1/total_pop)
+
+pl_hat = london_male/london_pop
+pp_hat = paris_male/paris_pop
+
+
+if (pl_hat>p_hat){
+  p_unusual_london = 1-pnorm(pl_hat, p_hat, sqrt(var_hat))
+}else{
+  p_unusual_london = pnorm(pl_hat, p_hat, sqrt(var_hat))
+}
+```
+The probability that this data or something more unusual occured for london is $0.003846365$. 
+
+```{r}
+if (pp_hat>p_hat){
+  p_unusual_paris = 1-pnorm(pp_hat, p_hat, sqrt(var_hat))
+}else{
+  p_unusual_paris = pnorm(pp_hat, p_hat, sqrt(var_hat))
+}
+```
+
+The probability that this data or something more unusual occured for london is $4.277472e-15$. 
+
+# (b)
+
+The assumption that the probabilities are equal does not seem right. With this $\hat{p}$, the chances of observing $\hat{p_L}$ and $\hat{p_P}$ are very low, so the probabilities are probably not equal for the two cities. 
+
+# (c)
+
+The signal to noise ratio is: $(\hat{p_L} - \hat{p})/\sqrt{(1/N)\hat{p}(1-\hat{p})}$. The CLT allows us to see the distance from the mean and the area under the curve with a normal distribution. 
+
+## Question 4
+(attached to the end)
+
+## Question 5 
+Suppose the lady correctly identifies $k$ teas (a hit). This means she incorrectly identifies $N-k$ teas. So there are $N-k$ milks that she identified as teas. So if there are $N$ milks and $N-k$ of them have been misidentified so there are $N-(N-k) = k$ correctly identified milks. So if there are $k$ hits for the $N$ cups she designates as tea, then there must be $k$ hits for the $N$ cups she designates as milk. 

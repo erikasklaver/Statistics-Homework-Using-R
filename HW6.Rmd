@@ -1,0 +1,19 @@
+---
+title: "HW6.Rmd"
+author: "Erika Sklaver"
+date: "March 1, 2017"
+output: html_document
+---
+
+## Question 3(c)
+
+```{r}
+vec = 1:5000
+probs = rep(0, 5000)
+for (i in 1:5000){
+  probs[i]=dbinom(i,2*i, 0.5)
+}
+
+plot(vec, probs, pch = 20, cex = .2, xlab = "N Values", ylab = "Probability")
+```
+

@@ -1,0 +1,95 @@
+---
+title: "Homework 8"
+author: "Erika Sklaver"
+date: "April 7, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question 2 
+
+
+```{r}
+data.set = read.table("flood.tab.txt")
+
+vec = data.set[,1]
+
+mle = length(vec)/(sum(vec))
+```
+
+MLE = 0.2893
+
+## Question 3 
+
+You can also embed plots, for example:
+
+```{r}
+
+alpha = seq(0,1,by=0.001);
+beta  = alpha;
+
+Nmm = 5844
+
+Nff = 5612
+
+Nmf = 6342
+
+llk = array(0,dim=c(length(alpha),length(beta)))
+
+for(i in 1:length(alpha)){
+  for(j in 1:length(beta)){
+    
+    llk[i,j] = Nmm*log(beta[j]*alpha[i] +(1-alpha[i])*(beta[j]^2))+
+      Nff*log((1-beta[j])*alpha[i]+(1-alpha[i])*((1-beta[j])^2))+
+      Nmf*log(2*(beta[j]*(1-beta[j])*(1-alpha[i])))
+  }
+}
+
+max_val = max(llk, na.rm = TRUE)
+
+alpha_beta = which(llk == max_val, arr.ind = TRUE)
+alpha_hat_index = alpha_beta[1,1]
+beta_hat_index = alpha_beta[1,2]
+    
+alpha_hat = alpha[alpha_hat_index]  
+beta_hat = beta[beta_hat_index]
+
+image(llk, xlab = "alpha", ylab = "beta")
+```
+
+$$\hat{\alpha}= 0.287 \\ \hat{\beta} = 0.507$$
+
+## Question 4
+
+```{r}
+p=.5
+
+vecN = 10:1000
+
+probs_binom = rep(0, 991)
+probs_norm = rep(0, 991)
+
+
+for (i in 1:991){
+  probs_binom[i]=pbinom(vecN[i]*p + sqrt(vecN[i]*p*(1-p)), vecN[i], p)-
+    pbinom(vecN[i]*p, vecN[i], p)
+}
+
+for (i in 1:991){
+  probs_norm[i]=pnorm(vecN[i]*p + sqrt(vecN[i]*p*(1-p)),vecN[i]*p, sqrt(vecN[i]*p*(1-p)))-
+    pnorm(vecN[i]*p, vecN[i]*p, sqrt(vecN[i]*p*(1-p)))
+}
+
+plot(vecN, probs_binom, xlab = "N values", ylab = "Binomial Probabilities")
+plot(vecN, probs_norm, xlab = "N values", ylab = "Normal Probabilities", ylim = c(.15,.4))
+
+```
+
+The binomial probabilities have banding because the binomial random variable is not continuous. So, there will be "jumps" for each N value where the mean changes. As N goes to infinity there will be less and less banding because the "jumps" will get smaller and smaller. 
+
+
+
+

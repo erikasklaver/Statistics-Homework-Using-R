@@ -1,0 +1,505 @@
+---
+title: "HW 13"
+author: "Erika Sklaver"
+date: "5/11/2017"
+output: html_document
+---
+
+##Question 1 
+
+#(a)
+When N=20 
+
+```{r}
+
+N = 20 
+theta = 0.2 
+probs = rep(0,20)
+
+for(k in 0:N){
+  
+  x1_vec = rep(0,k)
+  for(x1 in 0:k){
+    
+    sum_up = 0;
+    for(x2 in 0:k){
+      sum_up = sum_up + choose(N, x1)*choose(N,x2)*choose(N-x1,k-x1)*choose(N-x2, N-k)*(1/choose(2*N-x1-x2,N-x1))*theta^(x1+x2)*(1-theta)^(2*N-x1-x2)
+    }
+    x1_vec[x1]=sum_up 
+  }
+  
+  probs[k]= sum(x1_vec)
+}
+
+plot(probs, col = "red", ylim = c(0,.4), xlab = "K", ylab = "Probability")
+lines(probs, col = "red")
+
+##theta = .4 
+theta = 0.4 
+probs = rep(0,20)
+
+for(k in 0:N){
+  
+  x1_vec = rep(0,k)
+  for(x1 in 0:k){
+    
+    sum_up = 0;
+    for(x2 in 0:k){
+      sum_up = sum_up + choose(N, x1)*choose(N,x2)*choose(N-x1,k-x1)*choose(N-x2, N-k)*(1/choose(2*N-x1-x2,N-x1))*theta^(x1+x2)*(1-theta)^(2*N-x1-x2)
+    }
+    x1_vec[x1]=sum_up 
+  }
+  
+  probs[k]= sum(x1_vec)
+}
+
+points(probs, col = "orange")
+lines(probs, col = "orange")
+
+##theta = .6 
+theta = 0.6 
+probs = rep(0,20)
+
+for(k in 0:N){
+  
+  x1_vec = rep(0,k)
+  for(x1 in 0:k){
+    
+    sum_up = 0;
+    for(x2 in 0:k){
+      sum_up = sum_up + choose(N, x1)*choose(N,x2)*choose(N-x1,k-x1)*choose(N-x2, N-k)*(1/choose(2*N-x1-x2,N-x1))*theta^(x1+x2)*(1-theta)^(2*N-x1-x2)
+    }
+    x1_vec[x1]=sum_up 
+  }
+  
+  probs[k]= sum(x1_vec)
+}
+
+points(probs, col = "green")
+lines(probs, col = "green")
+
+##theta = .8 
+theta = 0.8 
+probs = rep(0,20)
+
+for(k in 0:N){
+  
+  x1_vec = rep(0,k)
+  for(x1 in 0:k){
+    
+    sum_up = 0;
+    for(x2 in 0:k){
+      sum_up = sum_up + choose(N, x1)*choose(N,x2)*choose(N-x1,k-x1)*choose(N-x2, N-k)*(1/choose(2*N-x1-x2,N-x1))*theta^(x1+x2)*(1-theta)^(2*N-x1-x2)
+    }
+    x1_vec[x1]=sum_up 
+  }
+  
+  probs[k]= sum(x1_vec)
+}
+
+points(probs, col = "blue")
+lines(probs, col = "blue")
+
+legend(x = "topleft", legend = c("theta = 0.2", "theta = 0.4", "theta = 0.6", "theta = 0.8"),
+       col = c("red", "orange", "green", "blue"), pch = 1)
+
+```
+
+When N = 50 
+
+```{r}
+
+N = 50 
+theta = 0.2 
+probs = rep(0,50)
+
+for(k in 0:N){
+  
+  x1_vec = rep(0,k)
+  for(x1 in 0:k){
+    
+    sum_up = 0;
+    for(x2 in 0:k){
+      sum_up = sum_up + choose(N, x1)*choose(N,x2)*choose(N-x1,k-x1)*choose(N-x2, N-k)*(1/choose(2*N-x1-x2,N-x1))*theta^(x1+x2)*(1-theta)^(2*N-x1-x2)
+    }
+    x1_vec[x1]=sum_up 
+  }
+  
+  probs[k]= sum(x1_vec)
+}
+
+plot(probs, col = "red", ylim = c(0,.4), xlab = "K", ylab = "Probability")
+lines(probs, col = "red")
+
+##theta = .4 
+theta = 0.4 
+probs = rep(0,50)
+
+for(k in 0:N){
+  
+  x1_vec = rep(0,k)
+  for(x1 in 0:k){
+    
+    sum_up = 0;
+    for(x2 in 0:k){
+      sum_up = sum_up + choose(N, x1)*choose(N,x2)*choose(N-x1,k-x1)*choose(N-x2, N-k)*(1/choose(2*N-x1-x2,N-x1))*theta^(x1+x2)*(1-theta)^(2*N-x1-x2)
+    }
+    x1_vec[x1]=sum_up 
+  }
+  
+  probs[k]= sum(x1_vec)
+}
+
+points(probs, col = "orange")
+lines(probs, col = "orange")
+
+##theta = .6 
+theta = 0.6 
+probs = rep(0,50)
+
+for(k in 0:N){
+  
+  x1_vec = rep(0,k)
+  for(x1 in 0:k){
+    
+    sum_up = 0;
+    for(x2 in 0:k){
+      sum_up = sum_up + choose(N, x1)*choose(N,x2)*choose(N-x1,k-x1)*choose(N-x2, N-k)*(1/choose(2*N-x1-x2,N-x1))*theta^(x1+x2)*(1-theta)^(2*N-x1-x2)
+    }
+    x1_vec[x1]=sum_up 
+  }
+  
+  probs[k]= sum(x1_vec)
+}
+
+points(probs, col = "green")
+lines(probs, col = "green")
+
+##theta = .8 
+theta = 0.8 
+probs = rep(0,50)
+
+for(k in 0:N){
+  
+  x1_vec = rep(0,k)
+  for(x1 in 0:k){
+    
+    sum_up = 0;
+    for(x2 in 0:k){
+      sum_up = sum_up + choose(N, x1)*choose(N,x2)*choose(N-x1,k-x1)*choose(N-x2, N-k)*(1/choose(2*N-x1-x2,N-x1))*theta^(x1+x2)*(1-theta)^(2*N-x1-x2)
+    }
+    x1_vec[x1]=sum_up 
+  }
+  
+  probs[k]= sum(x1_vec)
+}
+
+points(probs, col = "blue")
+lines(probs, col = "blue")
+
+legend(x = "topleft", legend = c("theta = 0.2", "theta = 0.4", "theta = 0.6", "theta = 0.8"),
+       col = c("red", "orange", "green", "blue"), pch = 1)
+
+```
+
+# (b)
+
+When N=4 
+
+```{r}
+# 4 cups 
+N=4
+KcN4 = qhyper(.95, N, N, N)
+
+theta = 0.5
+
+probs = rep(0, KcN4+1)
+
+for (k in 0:KcN4){
+  
+  x1_vec = rep(0,k+1)
+  for (x1 in 0:k){
+    
+    sum_up = 0
+    for(x2 in 0:k){
+      sum_up = sum_up + choose(N, x1)*choose(N,x2)*choose(N-x1,k-x1)*choose(N-x2, N-k)*(1/choose(2*N-x1-x2,N-x1))*theta^(x1+x2)*(1-theta)^(2*N-x1-x2)
+    }
+    x1_vec[x1+1]= sum_up
+  }
+  probs[k+1]=sum(x1_vec)
+}
+
+beta = sum(probs)
+power4 = 1-beta
+```
+$k_c(N) = 4$ and the probability that she finds herself in the critical region is $0.3017299$
+
+
+When N=10
+
+```{r}
+#10 cups 
+N=10
+KcN10 = qhyper(.95, N, N, N)
+
+theta = 0.5
+
+probs = rep(0, KcN10+1)
+
+for (k in 0:KcN10){
+  
+  x1_vec = rep(0,k+1)
+  for (x1 in 0:k){
+    
+    sum_up = 0
+    for(x2 in 0:k){
+      sum_up = sum_up + choose(N, x1)*choose(N,x2)*choose(N-x1,k-x1)*choose(N-x2, N-k)*(1/choose(2*N-x1-x2,N-x1))*theta^(x1+x2)*(1-theta)^(2*N-x1-x2)
+    }
+    x1_vec[x1+1]= sum_up
+  }
+  probs[k+1]=sum(x1_vec)
+}
+
+beta = sum(probs)
+power10 = 1-beta
+
+
+```
+$k_c(N) = 8$ and the probability that she finds herself in the critical region is $0.5708551$
+
+
+When N=20 
+
+```{r}
+#20 cups 
+N=20
+KcN20 = qhyper(.95, N, N, N)
+
+theta = 0.5
+
+probs = rep(0, KcN20+1)
+
+for (k in 0:KcN20){
+  
+  x1_vec = rep(0,k+1)
+  for (x1 in 0:k){
+    
+    sum_up = 0
+    for(x2 in 0:k){
+      sum_up = sum_up + choose(N, x1)*choose(N,x2)*choose(N-x1,k-x1)*choose(N-x2, N-k)*(1/choose(2*N-x1-x2,N-x1))*theta^(x1+x2)*(1-theta)^(2*N-x1-x2)
+    }
+    x1_vec[x1+1]= sum_up
+  }
+  probs[k+1]=sum(x1_vec)
+}
+
+beta = sum(probs)
+power20 = 1-beta
+
+```
+$k_c(N) = 14$ and the probability that she finds herself in the critical region is $0.8806994$
+
+
+## Question 2 
+
+```{r}
+##power of test when N=5
+N = 5
+null_p = 0.5
+real_p = 0.6
+alpha = .01
+
+z_alpha_left = qbinom(p = alpha/2, size = N, prob = null_p)
+z_alpha_right = qbinom(p = 1-alpha/2, size = N, prob = null_p)
+beta = pbinom(z_alpha_right-1,size = N, prob = real_p) - pbinom(z_alpha_left+1,size = N, prob = real_p)
+
+power5 = 1-beta
+```
+Power of the test when N=5 is: $0.1648$
+
+```{r}
+##power of test when N=10
+N = 10
+null_p = 0.5
+real_p = 0.6
+alpha = .01
+
+z_alpha_left = qbinom(p = alpha/2, size = N, prob = null_p)
+z_alpha_right = qbinom(p = 1-alpha/2, size = N, prob = null_p)
+beta = pbinom(z_alpha_right-1,size = N, prob = real_p) - pbinom(z_alpha_left+1,size = N, prob = real_p)
+
+power10 = 1-beta
+```
+Power of the test when N=10 is: $0.05865196$
+
+```{r}
+##power of test when N=20
+N = 20
+null_p = 0.5
+real_p = 0.6
+alpha = .01
+
+z_alpha_left = qbinom(p = alpha/2, size = N, prob = null_p)
+z_alpha_right = qbinom(p = 1-alpha/2, size = N, prob = null_p)
+beta = pbinom(z_alpha_right-1,size = N, prob = real_p) - pbinom(z_alpha_left+1,size = N, prob = real_p)
+
+power20 = 1-beta
+```
+Power of the test when N=20 is: $0.05256348$
+
+```{r}
+##power of test when N=100
+N = 100
+null_p = 0.5
+real_p = 0.6
+alpha = .01
+
+z_alpha_left = qbinom(p = alpha/2, size = N, prob = null_p)
+z_alpha_right = qbinom(p = 1-alpha/2, size = N, prob = null_p)
+beta = pbinom(z_alpha_right-1,size = N, prob = real_p) - pbinom(z_alpha_left+1,size = N, prob = real_p)
+
+power100 = 1-beta 
+```
+Power of the test when N=100 is: $0.3068171$
+
+## Question 3 
+
+```{r}
+N = 25
+stdv = 1
+a = 0.05
+
+x <- seq(-4, 4, length=100)
+
+plot(x,dt(x, df = N-1), type='l', lty=1, xlab='', ylab='', ylim = c(0, .4))
+lines(x,dnorm(x, mean = 1, sd= stdv), type='l', lty=1, xlab='', ylab='', col = "red")
+
+legend(x = "topleft", legend = c("Null Distribution", "Sampling Distribution"),
+       col = c("black","red"), lty=c(1,1), cex=.65)
+
+crit_val = qt(1-a, df = N-1)
+beta = pnorm(crit_val, mean = 1, sd = stdv)
+power = 1-beta 
+```
+
+The power of the test is $0.2385787$
+
+```{r}
+alpha = seq(from = 0.01, to = .99, by = .01)
+
+#N=2
+N = 2 
+power = rep(0, length(alpha))
+for (i in 1:length(alpha)){
+  crit_val = qt(1-alpha[i], df = N-1)
+  beta = pnorm(crit_val, mean = 1, sd = stdv)
+  power[i] = 1-beta
+}
+plot(alpha, power, col = "red", type = 'l')
+
+#N=5
+N = 5 
+power = rep(0, length(alpha))
+for (i in 1:length(alpha)){
+  crit_val = qt(1-alpha[i], df = N-1)
+  beta = pnorm(crit_val, mean = 1, sd = stdv)
+  power[i] = 1-beta
+}
+points(alpha, power, col = "orange", type = 'l')
+
+#N=10
+N = 10 
+power = rep(0, length(alpha))
+for (i in 1:length(alpha)){
+  crit_val = qt(1-alpha[i], df = N-1)
+  beta = pnorm(crit_val, mean = 1, sd = stdv)
+  power[i] = 1-beta
+}
+points(alpha, power, col = "green", type = 'l')
+
+#N=30
+
+N = 30 
+power = rep(0, length(alpha))
+for (i in 1:length(alpha)){
+  crit_val = qt(1-alpha[i], df = N-1)
+  beta = pnorm(crit_val, mean = 1, sd = stdv)
+  power[i] = 1-beta
+}
+points(alpha, power, col = "blue", type = 'l')
+
+#N=100
+
+N = 100 
+power = rep(0, length(alpha))
+for (i in 1:length(alpha)){
+  crit_val = qt(1-alpha[i], df = N-1)
+  beta = pnorm(crit_val, mean = 1, sd = stdv)
+  power[i] = 1-beta
+}
+points(alpha, power, col = "purple", type = 'l')
+
+legend(x = "topleft", legend = c("N=2", "N=5", "N=10", "N=30", "N=100"),
+       col = c("red", "orange", "green", "blue", "purple"), lty=c(1,1))
+
+```
+
+
+```{r}
+mu = seq(from = 0, to = 5, by = .05)
+N=100
+
+#alpha = .01 
+a = .01 
+power = rep(0, length(mu))
+for (i in 1:length(mu)){
+  crit_val = qt(1-a, df = N-1)
+  beta = pnorm(crit_val, mean = mu[i], sd = stdv)
+  power[i] = 1-beta
+}
+plot(mu, power, col = "red", type = 'l', xlab = "means")
+
+#alpha = .03
+a = .03 
+power = rep(0, length(mu))
+for (i in 1:length(mu)){
+  crit_val = qt(1-a, df = N-1)
+  beta = pnorm(crit_val, mean = mu[i], sd = stdv)
+  power[i] = 1-beta
+}
+points(mu, power, col = "orange", type = 'l')
+
+#alpha = .05
+a = .05 
+power = rep(0, length(mu))
+for (i in 1:length(mu)){
+  crit_val = qt(1-a, df = N-1)
+  beta = pnorm(crit_val, mean = mu[i], sd = stdv)
+  power[i] = 1-beta
+}
+points(mu, power, col = "green", type = 'l')
+
+#alpha = .08
+a = .08 
+power = rep(0, length(mu))
+for (i in 1:length(mu)){
+  crit_val = qt(1-a, df = N-1)
+  beta = pnorm(crit_val, mean = mu[i], sd = stdv)
+  power[i] = 1-beta
+}
+points(mu, power, col = "blue", type = 'l')
+
+#alpha = .1
+a = .1 
+power = rep(0, length(mu))
+for (i in 1:length(mu)){
+  crit_val = qt(1-a, df = N-1)
+  beta = pnorm(crit_val, mean = mu[i], sd = stdv)
+  power[i] = 1-beta
+}
+points(mu, power, col = "purple", type = 'l')
+
+legend(x = "topleft", legend = c("alpha = .01", "alpha = .03", "alpha = .05", "alpha = .07", "alpha = .1"),
+       col = c("red", "orange", "green", "blue", "purple"), lty=c(1,1), cex = .9)
+
+```
